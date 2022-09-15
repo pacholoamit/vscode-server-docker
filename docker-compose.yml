@@ -4,7 +4,6 @@ services:
   vscode:
     container_name: vscode
     build: .
-    command: --without-connection-token
 
     ports:
       - "8000:8000"
