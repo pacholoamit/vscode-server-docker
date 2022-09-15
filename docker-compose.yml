@@ -1,0 +1,13 @@
+version: "3.0"
+
+services:
+  vscode:
+    container_name: vscode
+    build: .
+    command: --without-connection-token
+
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./vscode-cli:/home/ubuntu/.vscode-cli"
+      - "./vscode-server:/home/ubuntu/.vscode-server"
