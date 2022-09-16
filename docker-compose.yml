@@ -6,8 +6,8 @@ services:
     build: .
     networks:
       - proxy
-    ports:
-      - "8000:8000"
+    # ports:
+    #   - "8000:8000"
     volumes:
       - "./vscode-cli:/root/.vscode-cli"
       - "./vscode-server:/root/.vscode-server"
