@@ -4,9 +4,26 @@ services:
   vscode:
     container_name: vscode
     build: .
-
+    networks:
+      - proxy
     ports:
       - "8000:8000"
     volumes:
-      - "./vscode-cli:/home/ubuntu/.vscode-cli"
-      - "./vscode-server:/home/ubuntu/.vscode-server"
+      - "./vscode-cli:/root/.vscode-cli"
+      - "./vscode-server:/root/.vscode-server"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vscode-server.entrypoints=http"
+      - "traefik.http.routers.vscode-server.rule=Host(`vscode.pacholoamit.com`)"
+      - "traefik.http.middlewares.vscode-server-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.vscode-server.middlewares=vscode-server-https-redirect"
+      - "traefik.http.routers.vscode-server-secure.entrypoints=https"
+      - "traefik.http.routers.vscode-server-secure.rule=Host(`vscode.pacholoamit.com`)"
+      - "traefik.http.routers.vscode-server-secure.tls=true"
+      - "traefik.http.routers.vscode-server-secure.service=vscode-server"
+      - "traefik.http.services.vscode-server.loadbalancer.server.port=8000"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
